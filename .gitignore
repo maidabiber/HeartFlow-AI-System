@@ -1,0 +1,14 @@
+# Spring Boot
+heartflow-api/target/
+
+# Angular
+heartflow-ui/node_modules/
+heartflow-ui/dist/
+
+# Environment
+.env
+*.env
+
+# IDE
+.vscode/
+.idea/
