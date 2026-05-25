@@ -1,0 +1,92 @@
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>HeartFlow</h2>
+      <p>AI Platform</p>
+    </div>
+    <nav>
+      <a (click)="navigateTo('/dashboard')" class="nav-item">Dashboard</a>
+      <a (click)="navigateTo('/patients')" class="nav-item active">Patients</a>
+      <a (click)="navigateTo('/ai-chat')" class="nav-item">AI Assistant</a>
+    </nav>
+    <div class="sidebar-footer">
+      <p>{{ currentUser?.fullName }}</p>
+      <span>{{ currentUser?.role }}</span>
+      <button (click)="logout()">Logout</button>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <div class="page-header">
+      <h1>Patients</h1>
+      <button class="btn-primary" (click)="showForm = !showForm">
+        {{ showForm ? 'Cancel' : '+ Add Patient' }}
+      </button>
+    </div>
+
+    <div class="add-form" *ngIf="showForm">
+      <h3>New Patient</h3>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>First Name</label>
+          <input [(ngModel)]="newPatient.firstName" placeholder="First name" />
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input [(ngModel)]="newPatient.lastName" placeholder="Last name" />
+        </div>
+        <div class="form-group">
+          <label>Date of Birth</label>
+          <input type="date" [(ngModel)]="newPatient.dateOfBirth" />
+        </div>
+        <div class="form-group">
+          <label>Gender</label>
+          <select [(ngModel)]="newPatient.gender">
+            <option value="MALE">Male</option>
+            <option value="FEMALE">Female</option>
+            <option value="OTHER">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" [(ngModel)]="newPatient.email" placeholder="Email" />
+        </div>
+        <div class="form-group">
+          <label>Phone</label>
+          <input [(ngModel)]="newPatient.phone" placeholder="Phone" />
+        </div>
+      </div>
+      <button class="btn-primary" (click)="addPatient()" [disabled]="loading">
+        {{ loading ? 'Saving...' : 'Save Patient' }}
+      </button>
+    </div>
+
+    <div class="search-bar">
+      <input [(ngModel)]="searchQuery" (input)="search()" placeholder="Search patients..." />
+    </div>
+
+    <div class="patients-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Date of Birth</th>
+            <th>Gender</th>
+            <th>Email</th>
+            <th>Phone</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let patient of patients">
+            <td>{{ patient.firstName }} {{ patient.lastName }}</td>
+            <td>{{ patient.dateOfBirth }}</td>
+            <td>{{ patient.gender }}</td>
+            <td>{{ patient.email }}</td>
+            <td>{{ patient.phone }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <p *ngIf="patients.length === 0" class="no-data">No patients found.</p>
+    </div>
+  </main>
+</div>

@@ -1,0 +1,72 @@
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>HeartFlow</h2>
+      <p>AI Platform</p>
+    </div>
+    <nav>
+      <a (click)="navigateTo('/dashboard')" class="nav-item active">Dashboard</a>
+      <a (click)="navigateTo('/patients')" class="nav-item">Patients</a>
+      <a (click)="navigateTo('/ai-chat')" class="nav-item">AI Assistant</a>
+    </nav>
+    <div class="sidebar-footer">
+      <p>{{ currentUser?.fullName }}</p>
+      <span>{{ currentUser?.role }}</span>
+      <button (click)="logout()">Logout</button>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <div class="page-header">
+      <h1>Dashboard</h1>
+      <p>Welcome back, {{ currentUser?.fullName }}</p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card blue">
+        <div class="stat-icon"></div>
+        <div class="stat-info">
+          <h3>{{ totalPatients }}</h3>
+          <p>Total Patients</p>
+        </div>
+      </div>
+      <div class="stat-card red">
+        <div class="stat-icon"></div>
+        <div class="stat-info">
+          <h3>{{ highRiskCount }}</h3>
+          <p>High Risk</p>
+        </div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-icon"></div>
+        <div class="stat-info">
+          <h3>AI</h3>
+          <p>Risk Engine Active</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="recent-patients">
+      <h2>Recent Patients</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Date of Birth</th>
+            <th>Gender</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let patient of patients.slice(0, 5)">
+            <td>{{ patient.firstName }} {{ patient.lastName }}</td>
+            <td>{{ patient.dateOfBirth }}</td>
+            <td>{{ patient.gender }}</td>
+            <td>{{ patient.email }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <p *ngIf="patients.length === 0" class="no-data">No patients yet.</p>
+    </div>
+  </main>
+</div>

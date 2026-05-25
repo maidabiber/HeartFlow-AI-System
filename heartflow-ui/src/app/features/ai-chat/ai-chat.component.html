@@ -1,0 +1,56 @@
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>HeartFlow</h2>
+      <p>AI Platform</p>
+    </div>
+    <nav>
+      <a (click)="navigateTo('/dashboard')" class="nav-item">Dashboard</a>
+      <a (click)="navigateTo('/patients')" class="nav-item">Patients</a>
+      <a (click)="navigateTo('/ai-chat')" class="nav-item active">AI Assistant</a>
+    </nav>
+    <div class="sidebar-footer">
+      <p>{{ currentUser?.fullName }}</p>
+      <span>{{ currentUser?.role }}</span>
+      <button (click)="logout()">Logout</button>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <div class="page-header">
+      <h1>AI Assistant</h1>
+      <p>Powered by Llama3 - cardiovascular health guidance</p>
+    </div>
+
+    <div class="chat-container">
+      <div class="messages">
+        <div *ngFor="let message of messages"
+             class="message"
+             [ngClass]="message.role">
+          <div class="message-bubble">
+            
+            <p>{{ message.content }}</p>
+          </div>
+        </div>
+        <div *ngIf="loading" class="message assistant">
+          <div class="message-bubble">
+            <span class="role-icon"></span>
+            <p class="typing">Thinking...</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="input-area">
+        <input
+          [(ngModel)]="userInput"
+          (keyup.enter)="sendMessage()"
+          placeholder="Ask about cardiovascular health metrics..."
+          [disabled]="loading"
+        />
+        <button (click)="sendMessage()" [disabled]="loading || !userInput.trim()">
+          Send
+        </button>
+      </div>
+    </div>
+  </main>
+</div>
