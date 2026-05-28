@@ -26,9 +26,6 @@ public class AiService {
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final HttpClient httpClient = HttpClient.newHttpClient();
 
-    /**
-     * Pokreće PRAVU AI analizu preko Google Gemini 2.0 Flash modela.
-     */
     public AiRiskResponse analyzeRisk(AiRiskRequest request) {
     log.info("Pokrećem LOKALNU AI analizu sa povećanim timeoutom...");
     String prompt = buildPrompt(request);
@@ -45,7 +42,6 @@ public class AiService {
         
         String requestBody = objectMapper.writeValueAsString(requestBodyMap);
 
-        // Postavljamo timeout od 2 minute da računar stigne učitati model od 4.7 GB u RAM
         HttpRequest httpRequest = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .timeout(java.time.Duration.ofMinutes(2)) 
@@ -53,7 +49,6 @@ public class AiService {
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
 
-        // Kreiramo klijent sa definisanim vremenom čekanja (bez razmaka u nazivu!)
         HttpClient httpClientWithTimeout = HttpClient.newBuilder()
                 .connectTimeout(java.time.Duration.ofMinutes(1))
                 .build();
@@ -72,9 +67,7 @@ public class AiService {
         throw new RuntimeException("Greška pri analizi rizika: " + e.getMessage());
     }
 }
-    /**
-     * Sastavlja detaljan medicinski prompt i pravila formatiranja za AI.
-     */
+    
     private String buildPrompt(AiRiskRequest r) {
         return """
                 Ti si kardiološki AI asistent. Analiziraj sljedeće podatke pacijenta i vrati procjenu kardiovaskularnog rizika.
@@ -127,13 +120,9 @@ public class AiService {
                         bool(r.getFamilyHistory()));
     }
 
-    /**
-     * Izdvaja sirovi tekst iz Google JSON-a, čisti ga i pretvara u Java objekat.
-     */
     private AiRiskResponse parseResponse(String responseBody) throws Exception {
     log.info("Primljen odgovor od lokalnog AI-ja.");
     
-    // 1. Prvo ispisujemo SIROVI odgovor u konzolu da ga vidimo očima
     System.out.println("==================================================");
     System.out.println("====== SIROVI ODGOVOR OD LLAME DIREKTNO: ======");
     System.out.println(responseBody);
@@ -142,12 +131,10 @@ public class AiService {
     JsonNode root = objectMapper.readTree(responseBody);
     String aiJson = root.path("response").asText().trim();
     
-    // 2. Ispisujemo i ono što je očišćeno unutar "response" polja
     System.out.println("====== IZVUČENI JSON ZA PARSIRANJE: ======");
     System.out.println(aiJson);
     System.out.println("==================================================");
 
-    // Čistimo eventualne markdown oznake ako ih je Llama ubacila
     aiJson = aiJson.replaceAll("```json", "").replaceAll("```", "").trim();
 
     return objectMapper.readValue(aiJson, AiRiskResponse.class);
