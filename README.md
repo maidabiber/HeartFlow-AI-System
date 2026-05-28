@@ -1,7 +1,7 @@
-$readme = @'
+
 # HeartFlow AI – Cardiovascular Health Platform
 
-> Dokumentacija za ovaj projekat izrađena je timski u okviru predmeta **Osnove informacionih sistema** na Elektrotehničkom fakultetu u Sarajevu. Implementaciju sistema odlučila sam realizovati samostalno, kao proširenje projektnog zadatka, s ciljem učenja novih tehnologija i izgradnje portfolio projekta.
+ Dokumentacija za ovaj projekat izrađena je timski u okviru predmeta **Osnove informacionih sistema** na Elektrotehničkom fakultetu u Sarajevu. Implementaciju sistema odlučila sam realizovati samostalno, kao proširenje projektnog zadatka, s ciljem učenja novih tehnologija i izgradnje portfolio projekta.
 
 ## O projektu
 
@@ -57,5 +57,3 @@ ollama serve
 ```
 
 Aplikacija dostupna na: `http://localhost:4200`
-
-## Struktura projekta
